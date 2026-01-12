@@ -30,3 +30,8 @@ The built-in Settings Panel offers complete control over:
 -   **HTML5 Canvas**: For high-performance 2D rendering.
 -   **Vanilla JavaScript**: No external dependencies.
 -   **CSS3**: For the glassmorphism UI.
+
+## Variants
+
+### Shoreline Simple Physics
+Located in `/Shoreline Simple Physics`, this version introduces simplified physics where waves interact with each other. Faster waves will slow down to avoid overtaking slower waves ahead of them, preventing visual overlap artifacts.
