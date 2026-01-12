@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shoreline Animation</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="canvas-container">
+        <canvas id="shorelineCanvas"></canvas>
+    </div>
+
+    <div id="settings-panel">
+        <h3>Canvas Settings</h3>
+        <div class="setting-group">
+            <label>Width <span id="canvas-width-val">1000</span></label>
+            <input type="number" id="canvas-width" value="1000">
+        </div>
+        <div class="setting-group">
+            <label>Height <span id="canvas-height-val">1000</span></label>
+            <input type="number" id="canvas-height" value="1000">
+        </div>
+        <div class="setting-group checkbox-group">
+            <input type="checkbox" id="consistent-stroke">
+            <label for="consistent-stroke">Consistent Stroke Width</label>
+        </div>
+        <div class="setting-group">
+            <label>Resolution (Step) <span id="resolution-step-val">10</span></label>
+            <input type="range" id="resolution-step" min="5" max="50" step="1" value="10">
+        </div>
+
+        <h3>Wave Grouping</h3>
+        <div class="setting-group">
+            <label>Min Lines <span id="group-min-val">3</span></label>
+            <input type="number" id="group-min" min="1" max="10" value="3">
+        </div>
+        <div class="setting-group">
+            <label>Max Lines <span id="group-max-val">6</span></label>
+            <input type="number" id="group-max" min="1" max="10" value="6">
+        </div>
+        <div class="setting-group">
+            <label>Spread <span id="group-spread-val">40</span></label>
+            <input type="range" id="group-spread" min="10" max="100" value="40">
+        </div>
+
+        <h3>Occlusion</h3>
+        <div class="setting-group checkbox-group">
+            <input type="checkbox" id="occlusion-mode" checked>
+            <label for="occlusion-mode">Enable Fade</label>
+        </div>
+        <div class="setting-group checkbox-group">
+            <input type="checkbox" id="occlusion-reverse">
+            <label for="occlusion-reverse">Reverse Fade</label>
+        </div>
+        <div class="setting-group">
+            <label>Fade Strength <span id="occlusion-strength-val">80%</span></label>
+            <input type="range" id="occlusion-strength" min="0" max="100" value="80">
+        </div>
+        <div class="setting-group">
+            <label>Front Line Opacity <span id="front-line-opacity-val">100%</span></label>
+            <input type="range" id="front-line-opacity" min="0" max="100" value="100">
+        </div>
+
+        <h3>Movement & Shape</h3>
+        <div class="setting-group">
+            <label>Wave Speed <span id="wave-speed-val">0.5</span></label>
+            <input type="range" id="wave-speed" min="0" max="3" step="0.1" value="0.5">
+        </div>
+        <div class="setting-group">
+            <label>Distance <span id="wave-distance-val">120</span></label>
+            <input type="range" id="wave-distance" min="50" max="300" step="10" value="120">
+        </div>
+        <div class="setting-group">
+            <label>Roughness <span id="roughness-val">0</span></label>
+            <input type="range" id="roughness" min="0" max="5" step="0.1" value="0">
+        </div>
+        <div class="setting-group">
+            <label>Bend Amplitude <span id="wave-amplitude-val">120</span></label>
+            <input type="range" id="wave-amplitude" min="0" max="300" step="5" value="120">
+        </div>
+        <div class="setting-group">
+            <label>Bend Speed <span id="bend-speed-val">0.1</span></label>
+            <input type="range" id="bend-speed" min="0" max="1" step="0.01" value="0.1">
+        </div>
+        <div class="setting-group">
+            <label>Direction (Deg) <span id="direction-val">0</span></label>
+            <input type="range" id="direction" min="0" max="360" step="1" value="0">
+        </div>
+
+        <h3>Small Waves (Detail)</h3>
+        <div class="setting-group">
+            <label>Amplitude <span id="detail-amp-val">15</span></label>
+            <input type="range" id="detail-amp" min="0" max="50" step="1" value="15">
+        </div>
+        <div class="setting-group">
+            <label>Speed <span id="detail-speed-val">0.2</span></label>
+            <input type="range" id="detail-speed" min="0" max="2" step="0.01" value="0.2">
+        </div>
+        <div class="setting-group">
+            <label>Spread (Width) <span id="detail-spread-val">100</span></label>
+            <input type="range" id="detail-spread" min="20" max="300" step="5" value="100">
+        </div>
+
+
+
+        <h3>Sand</h3>
+        <div class="setting-group">
+            <label>Density <span id="sand-density-val">0</span></label>
+            <input type="range" id="sand-density" min="0" max="5000" step="100" value="0">
+        </div>
+        <div class="setting-group">
+            <label>Height <span id="sand-height-val">300</span></label>
+            <input type="range" id="sand-height" min="50" max="800" step="10" value="300">
+        </div>
+        <div class="setting-group">
+            <label>Distribution <span id="sand-power-val">3</span></label>
+            <input type="range" id="sand-power" min="1" max="10" step="0.5" value="3">
+        </div>
+        <div class="setting-group">
+            <label>Color</label>
+            <input type="color" id="sand-color" value="#111111">
+        </div>
+
+        <div class="setting-group">
+            <label>Stroke Width <span id="stroke-width-val">2</span></label>
+            <input type="range" id="stroke-width" min="0.5" max="5" step="0.1" value="2">
+        </div>
+        <div class="setting-group">
+            <button id="toggle-play">Pause</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
