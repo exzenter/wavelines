@@ -1,0 +1,173 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "shoreline/simple-physics-block",
+    "version": "1.0.0",
+    "title": "Shoreline Simple Physics",
+    "category": "media",
+    "icon": "waves",
+    "description": "A generative shoreline animation block that behaves like a Group block.",
+    "supports": {
+        "html": false,
+        "align": [
+            "wide",
+            "full"
+        ],
+        "color": {
+            "background": true,
+            "text": true,
+            "link": true
+        },
+        "spacing": {
+            "margin": true,
+            "padding": true
+        },
+        "layout": true,
+        "typography": true,
+        "dimensions": {
+            "aspectRatio": true
+        }
+    },
+    "textdomain": "shoreline-simple-physics-block",
+    "editorScript": "file:./index.js",
+    "style": "file:./style-index.css",
+    "viewScript": "file:./view.js",
+    "attributes": {
+        "customAspectRatio": {
+            "type": "string",
+            "default": "0.5625"
+        },
+        "consistentStroke": {
+            "type": "boolean",
+            "default": false
+        },
+        "resolutionStep": {
+            "type": "number",
+            "default": 10
+        },
+        "groupMin": {
+            "type": "number",
+            "default": 3
+        },
+        "groupMax": {
+            "type": "number",
+            "default": 6
+        },
+        "groupSpread": {
+            "type": "number",
+            "default": 40
+        },
+        "occlusionMode": {
+            "type": "boolean",
+            "default": true
+        },
+        "occlusionReverse": {
+            "type": "boolean",
+            "default": false
+        },
+        "occlusionStrength": {
+            "type": "number",
+            "default": 80
+        },
+        "frontLineOpacity": {
+            "type": "number",
+            "default": 100
+        },
+        "waveSpeed": {
+            "type": "number",
+            "default": 0.5
+        },
+        "waveDistance": {
+            "type": "number",
+            "default": 120
+        },
+        "roughness": {
+            "type": "number",
+            "default": 0
+        },
+        "waveAmplitude": {
+            "type": "number",
+            "default": 120
+        },
+        "bendSpeed": {
+            "type": "number",
+            "default": 0.1
+        },
+        "direction": {
+            "type": "number",
+            "default": 0
+        },
+        "detailAmp": {
+            "type": "number",
+            "default": 15
+        },
+        "detailSpeed": {
+            "type": "number",
+            "default": 0.2
+        },
+        "detailSpread": {
+            "type": "number",
+            "default": 100
+        },
+        "sandDensity": {
+            "type": "number",
+            "default": 0
+        },
+        "sandHeight": {
+            "type": "number",
+            "default": 300
+        },
+        "sandPower": {
+            "type": "number",
+            "default": 3
+        },
+        "sandColor": {
+            "type": "string",
+            "default": "#111111"
+        },
+        "strokeWidth": {
+            "type": "number",
+            "default": 2
+        },
+        "waveScale": {
+            "type": "number",
+            "default": 1
+        },
+        "fillEnabled": {
+            "type": "boolean",
+            "default": false
+        },
+        "fillColor": {
+            "type": "string",
+            "default": "#3498db"
+        },
+        "fillRandomMode": {
+            "type": "boolean",
+            "default": false
+        },
+        "fillOpacity": {
+            "type": "number",
+            "default": 80
+        },
+        "fillOpacityDecay": {
+            "type": "number",
+            "default": 15
+        },
+        "fillIgnoreOcclusion": {
+            "type": "boolean",
+            "default": false
+        },
+        "fillSolid": {
+            "type": "boolean",
+            "default": false
+        },
+        "fillColorMode": {
+            "type": "string",
+            "default": "single"
+        },
+        "fillGradientType": {
+            "type": "string",
+            "default": "transparent"
+        }
+    }
+}

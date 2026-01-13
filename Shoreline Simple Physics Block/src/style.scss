@@ -1,0 +1,21 @@
+.shoreline-physics-block-container {
+    padding: 0;
+    /* Ensure it behaves like a container */
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    min-height: 200px;
+    /* Default height */
+}
+
+.shoreline-content-wrapper {
+    /* Ensure content sits on top */
+    position: relative;
+    z-index: 10;
+    /* Default padding removed to respect editor settings */
+}
+
+/* Fix for editor canvas positioning */
+.shoreline-background-canvas {
+    pointer-events: none;
+}
