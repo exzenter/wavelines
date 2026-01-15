@@ -308,7 +308,7 @@ export default function Edit({ attributes, setAttributes }) {
             // If settings.consistentStroke is true, logic... 
 
             // Clear canvas
-            ctx.clearRect(0, 0, settings.canvasWidth, settings.canvasHeight);
+            ctx.clearRect(0, 0, settings.width, settings.height);
             // We use clearRect instead of fillRect white so that if they set a background color on the group, it shows through?
             // "renders our Shoreline app as background".
             // The Shoreline app has a white background hardcoded in draw().
@@ -592,7 +592,10 @@ export default function Edit({ attributes, setAttributes }) {
                     left: 0,
                     width: '100%',
                     height: '100%',
-                    zIndex: 1
+                    zIndex: 1,
+                    pointerEvents: 'auto',
+                    cursor: 'text',
+                    minHeight: '50px'
                 }}>
                     <InnerBlocks />
                 </div>
