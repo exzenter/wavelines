@@ -53,7 +53,7 @@ export default function Edit({ attributes, setAttributes }) {
         if (!canvas) return;
         const ctx = canvas.getContext('2d');
 
-        // --- Perlin/Simplex Noise (Scoped) ---
+        // --- Perlin Noise - Runtime calculation (no LUT for continuous noise without periodic jumps) ---
         const perm = [];
         let gradP = [];
         while (perm.length < 256) {
@@ -72,16 +72,28 @@ export default function Edit({ attributes, setAttributes }) {
         function fade(t) { return t * t * t * (t * (t * 6 - 15) + 10); }
 
         function noise(x, y) {
-            let X = Math.floor(x) & 255;
-            let Y = Math.floor(y) & 255;
-            x -= Math.floor(x);
-            y -= Math.floor(y);
+            // Wrap to 0-256 range BEFORE flooring for seamless tiling
+            x = ((x % 256) + 256) % 256;
+            y = ((y % 256) + 256) % 256;
+
+            let X = Math.floor(x);
+            let Y = Math.floor(y);
+
+            // Get fractional part for interpolation
+            x -= X;
+            y -= Y;
+
+            // Wrap neighbor indices for seamless tiling
+            let X1 = (X + 1) % 256;
+            let Y1 = (Y + 1) % 256;
+
             let u = fade(x);
             let v = fade(y);
+
             let n00 = gradP[X + perm[Y]].x * x + gradP[X + perm[Y]].y * y;
-            let n01 = gradP[X + perm[Y + 1]].x * x + gradP[X + perm[Y + 1]].y * (y - 1);
-            let n10 = gradP[X + 1 + perm[Y]].x * (x - 1) + gradP[X + 1 + perm[Y]].y * y;
-            let n11 = gradP[X + 1 + perm[Y + 1]].x * (x - 1) + gradP[X + 1 + perm[Y + 1]].y * (y - 1);
+            let n01 = gradP[X + perm[Y1]].x * x + gradP[X + perm[Y1]].y * (y - 1);
+            let n10 = gradP[X1 + perm[Y]].x * (x - 1) + gradP[X1 + perm[Y]].y * y;
+            let n11 = gradP[X1 + perm[Y1]].x * (x - 1) + gradP[X1 + perm[Y1]].y * (y - 1);
             return lerp(lerp(n00, n10, u), lerp(n01, n11, u), v);
         }
 
@@ -89,6 +101,7 @@ export default function Edit({ attributes, setAttributes }) {
         let time = 0;
         let bendTime = 0;
         let sandParticles = [];
+        let sandPath = null; // Performance: cached Path2D for sand
         let waveGroups = [];
         let diag = 0;
 
@@ -196,7 +209,7 @@ export default function Edit({ attributes, setAttributes }) {
             constructor(baseY) {
                 this.baseY = baseY;
                 this.speed = 0.2 + Math.random() * 0.1;
-                this.offset = Math.random() * 100;
+                this.offset = Math.random() * 50;
                 this.lines = [];
                 // Assign fill color determined by mode
                 this.updateColor();
@@ -252,12 +265,14 @@ export default function Edit({ attributes, setAttributes }) {
 
         function initSand() {
             sandParticles = [];
+            // Performance Optimization: Use Path2D to batch all sand particles
+            sandPath = new Path2D();
             for (let i = 0; i < settings.sandDensity; i++) {
-                sandParticles.push({
-                    x: Math.random() * diag,
-                    y: diag - (Math.pow(Math.random(), settings.sandPower) * settings.sandHeight),
-                    size: Math.random() < 0.5 ? 0.8 : 1.2
-                });
+                const x = Math.random() * diag;
+                const y = diag - (Math.pow(Math.random(), settings.sandPower) * settings.sandHeight);
+                const size = Math.random() < 0.5 ? 0.8 : 1.2;
+                sandParticles.push({ x, y, size });
+                sandPath.rect(x, y, size, size);
             }
         }
 
@@ -334,10 +349,11 @@ export default function Edit({ attributes, setAttributes }) {
             ctx.scale(settings.waveScale, settings.waveScale);
             ctx.translate(-diag / 2, -diag / 2);
 
-            ctx.fillStyle = settings.sandColor;
-            sandParticles.forEach(p => {
-                ctx.fillRect(p.x, p.y, p.size, p.size);
-            });
+            // Performance: Draw all sand with single Path2D fill
+            if (sandPath && settings.sandDensity > 0) {
+                ctx.fillStyle = settings.sandColor;
+                ctx.fill(sandPath);
+            }
 
             manageWaves();
 
@@ -420,8 +436,8 @@ export default function Edit({ attributes, setAttributes }) {
                 }
             });
 
-            time += 0.05;
-            bendTime += 0.05 * settings.bendSpeed;
+            time = (time + 0.05) % 256;
+            bendTime = (bendTime + 0.05 * settings.bendSpeed) % 256;
             waveGroups.forEach(g => g.update());
             enforceConstraints();
 
